@@ -8,12 +8,6 @@ const userShema = new mongoose.Schema({
   },
   name: String,
   passwordHash: String,
-  orders: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Order'
-    }
-  ],
 })
 
 userShema.set('toJSON', {
