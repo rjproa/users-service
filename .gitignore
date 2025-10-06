@@ -1,6 +1,7 @@
 # carpetas
 node_modules/
+.vscode/
 
 # archivos
 .env
-
+pruebas.rest
