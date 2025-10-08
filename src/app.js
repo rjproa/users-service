@@ -28,6 +28,13 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname, "../public")))
 app.use(requestLogger)
 app.use('/api/users', routerUser)
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    service: 'users-service',
+    timestamp: new Date().toISOString()
+  })
+})
 app.use(unknowEndpoint)
 app.use(errorHandler)
 

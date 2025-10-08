@@ -30,14 +30,13 @@ createUser = async (req, res, next) => {
 
     const existingUser = await User.findOne({ username })
 
-    if (existingUser) {
-      return res.status(409).json({ error: 'Username ya existe' })
-    }
-
     if (!username || !password) {
       return res.status(400).json({ error: 'Username y password son requeridos' });
     }
 
+    if (existingUser) {
+      return res.status(409).json({ error: 'Username ya existe' })
+    }
     const saltRounds = 10
 
     const passwordHash = await bcrypt.hash(password, saltRounds)
