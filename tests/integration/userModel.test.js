@@ -9,6 +9,10 @@ beforeAll(async () => dbConnect())
 
 afterAll(async () => dbDisconnect())
 
+beforeEach(async () => {
+  await User.deleteMany()
+})
+
 describe('Validar el modelo de User', () => {
 
   test('Debería validar guardando un nuevo User correctamente', async () => {
@@ -25,19 +29,26 @@ describe('Validar el modelo de User', () => {
     validateStringEquality(savedUser.username, "rjproa")
     validateStringEquality(savedUser.name, "richard vega")
     validateStringEquality(savedUser.passwordHash, "hashqwerty")
-
   })
 
   test('Debería fallar al guardar un usuario duplicado', async () => {
-    expect.assertions(4)
     const validUser = new User({
       username: "rjproa",
-      name: "richard jhamil",
-      passwordHash: "hashqwerty"
+      name: "jhamil",
+      passwordHash: "qwerty"
+    })
+
+    await validUser.save()
+
+    expect.assertions(4)
+    const duplicateUser = new User({
+      username: "rjproa",
+      name: "richard",
+      passwordHash: "qwerty"
     })
 
     try {
-      await validUser.save()
+      await duplicateUser.save()
     } catch (error) {
       const { name, code } = error
       validateMongoDuplicationError(name, code)
